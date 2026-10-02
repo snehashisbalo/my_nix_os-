@@ -278,8 +278,12 @@ theme-next-wallpaper
 
 Named themes live in `modules/users/scythe.nix` under `theme.themes`. Each one
 selects a Noctalia palette (`palette.kind` + `palette.name`), an optional
-`mode` and `wallpaper`, and may override the global `theme.font` / `theme.cursor`
-/ `theme.icons`.
+`wallpaper`, and may override the global `theme.font` / `theme.cursor` /
+`theme.icons`.
+
+Every theme is **dark**: the `mode` option only accepts `"dark"`, so setting
+`"light"` fails at build time and there are no light palettes or light
+cursor/icon overrides in the config.
 
 What a switch changes, live:
 

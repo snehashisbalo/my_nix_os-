@@ -382,12 +382,11 @@
                 size=$(read_state font-size)
                 icon_theme=$(read_state icon-theme)
                 cursor_theme=$(read_state cursor-theme)
-                mode=$(read_state mode)
 
                 [ -n "$size" ] || size=10
-                [ -n "$mode" ] || mode=dark
 
-                if [ "$mode" = light ]; then gtk_theme=adw-gtk3; else gtk_theme=adw-gtk3-dark; fi
+                # Every theme is dark, so GTK always uses the dark variant.
+                gtk_theme=adw-gtk3-dark
 
                 write_settings() {
                   target="$1"
@@ -397,7 +396,7 @@
                   if [ -L "$target" ]; then rm -f "$target"; fi
                   {
                     echo "[Settings]"
-                    echo "gtk-application-prefer-dark-theme=$([ "$mode" = light ] && echo false || echo true)"
+                    echo "gtk-application-prefer-dark-theme=true"
                     echo "gtk-button-images=true"
                     echo "gtk-cursor-blink=true"
                     echo "gtk-cursor-blink-time=1000"
@@ -479,11 +478,7 @@
                 gsettings set org.gnome.desktop.interface font-name "$family $size" >/dev/null 2>&1 || true
                 [ -n "$icon_theme" ] && gsettings set org.gnome.desktop.interface icon-theme "$icon_theme" >/dev/null 2>&1 || true
                 [ -n "$cursor_theme" ] && gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme" >/dev/null 2>&1 || true
-                if [ "$mode" = light ]; then
-                  gsettings set org.gnome.desktop.interface color-scheme prefer-light >/dev/null 2>&1 || true
-                else
-                  gsettings set org.gnome.desktop.interface color-scheme prefer-dark >/dev/null 2>&1 || true
-                fi
+                gsettings set org.gnome.desktop.interface color-scheme prefer-dark >/dev/null 2>&1 || true
               '';
             })
 
@@ -492,39 +487,15 @@
               STATE_FILE="$STATE_DIR/current"
 
               usage() {
-                echo "usage: theme-set <theme> [--mode dark|light]" >&2
+                echo "usage: theme-set <theme>" >&2
                 echo "  available: ${validNames}" >&2
                 exit 2
               }
 
-              if [ "$#" -lt 1 ]; then
+              if [ "$#" -ne 1 ]; then
                 usage
               fi
               requested="$1"
-              shift
-
-              mode_override=""
-              while [ "$#" -gt 0 ]; do
-                case "$1" in
-                  --mode)
-                    [ "$#" -ge 2 ] || {
-                      echo "theme-set: --mode needs a value" >&2
-                      usage
-                    }
-                    mode_override="$2"
-                    shift 2
-                    ;;
-                  --mode=*)
-                    mode_override="''${1#*=}"
-                    shift
-                    ;;
-                  -h | --help) usage ;;
-                  *)
-                    echo "theme-set: unknown argument: $1" >&2
-                    usage
-                    ;;
-                esac
-              done
 
               mkdir -p "$STATE_DIR"
 
@@ -554,14 +525,9 @@
               # a reboot and a `home-manager switch`.
               noctalia msg color-scheme-set "$kind" "$name"
 
-              # An explicit --mode wins, then the theme's own mode, then leave it.
-              target_mode="$mode_override"
-              if [ -z "$target_mode" ]; then
-                target_mode="$mode"
-              fi
-              if [ -n "$target_mode" ]; then
-                noctalia msg theme-mode-set "$target_mode"
-              fi
+              # Every theme is dark (`mode` is always "dark", see
+              # entities/theme.nix), so this always pins Noctalia to dark mode.
+              noctalia msg theme-mode-set "$mode"
 
               if [ -n "$wallpaper" ] && [ -e "$wallpaper" ]; then
                 noctalia msg wallpaper-set "$wallpaper"
@@ -573,7 +539,7 @@
               printf '%s\n' "$font_size" >"$STATE_DIR/font-size"
               printf '%s\n' "$cursor_theme" >"$STATE_DIR/cursor-theme"
               printf '%s\n' "$icon_theme" >"$STATE_DIR/icon-theme"
-              printf '%s\n' "''${target_mode:-dark}" >"$STATE_DIR/mode"
+              printf '%s\n' "$mode" >"$STATE_DIR/mode"
               theme-runtime-apply
 
               # Noctalia already re-renders on a palette change; being explicit
@@ -586,9 +552,7 @@
               ${restartCommands}
 
               echo "theme: $requested (palette=$kind/$name)"
-              if [ -n "$target_mode" ]; then
-                echo "  mode: $target_mode"
-              fi
+              echo "  mode: $mode"
               if [ -n "$font_family" ]; then
                 echo "  font: $font_family $font_size"
               fi

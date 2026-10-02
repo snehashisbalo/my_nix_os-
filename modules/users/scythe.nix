@@ -41,7 +41,10 @@
         programs.home-manager.enable = true;
 
         # Named themes for `theme-set <name>`. Colours live in Noctalia; this
-        # only records which palette/mode/wallpaper combination to select.
+        # only records which palette/wallpaper combination to select.
+        #
+        # Every theme runs in dark mode (the `mode` option only allows "dark"),
+        # so no light palette or light cursor/icon override is defined here.
         #
         # `font`, `cursor` and `icons` are the global defaults applied by every
         # theme; a theme may override any of them. Every package named here is
@@ -68,13 +71,11 @@
               description = "Noctalia — builtin, dark";
               palette.kind = "builtin";
               palette.name = "Noctalia";
-              mode = "dark";
             };
             nullscapes = {
               description = "Nullscapes — custom, dark";
               palette.kind = "custom";
               palette.name = "Nullscapes";
-              mode = "dark";
             };
             catppuccin = {
               description = "Catppuccin — builtin, dark";
@@ -106,21 +107,10 @@
               palette.kind = "community";
               palette.name = "Oxocarbon";
             };
-            paper = {
-              description = "Kanagawa Paper — community, LIGHT";
-              palette.kind = "community";
-              palette.name = "Kanagawa Paper";
-              mode = "light";
-              # A light palette needs a light cursor and icon set, otherwise the
-              # dark defaults clash with every window.
-              cursor = {
-                name = "catppuccin-latte-dark-cursors";
-                package = pkgs.catppuccin-cursors.latteDark;
-              };
-              icons = {
-                name = "Papirus";
-                package = pkgs.papirus-icon-theme;
-              };
+            kanagawa = {
+              description = "Kanagawa — builtin, dark";
+              palette.kind = "builtin";
+              palette.name = "Kanagawa";
             };
           };
         };

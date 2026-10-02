@@ -124,9 +124,13 @@ in
                     default = { };
                   };
                   mode = lib.mkOption {
-                    type = lib.types.nullOr (lib.types.enum [ "dark" "light" ]);
-                    default = null;
-                    description = "Force a mode, or null to leave the current mode alone.";
+                    type = lib.types.enum [ "dark" ];
+                    default = "dark";
+                    description = ''
+                      Colour mode. Only "dark" is supported: light palettes are
+                      deliberately excluded so every theme stays dark. Spelling
+                      "light" here is a build-time type error.
+                    '';
                   };
                   wallpaper = lib.mkOption {
                     type = lib.types.nullOr lib.types.str;
