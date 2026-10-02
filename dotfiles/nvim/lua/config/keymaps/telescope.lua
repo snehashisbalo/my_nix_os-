@@ -1,0 +1,37 @@
+return {
+  { "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Open files" },
+  { "<leader>s", group = "Search" },
+  { "<leader>sb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+  {
+    "<leader>sc",
+    function()
+      require("config.telescope-colorscheme").colorscheme()
+    end,
+    desc = "Colorschemes",
+  },
+  { "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
+  { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Files" },
+  { "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
+  { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
+  { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+  {
+    "<leader>sn",
+    ":lua require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }<cr>",
+    desc = "Neovim config files",
+  },
+  vim.g.neovide and {
+    "<leader>sp",
+    "<cmd>ProjectExplorer<cr>",
+    desc = "Projects",
+  } or nil,
+  { "<leader>ss", "<cmd>Telescope builtin<cr>", desc = "Builtin pickers" },
+  {
+    "<leader>st",
+    "<cmd>TodoTelescope theme=dropdown previewer=false layout_config={width=0.5,height=0.3}<cr>",
+    desc = "TODOs",
+  },
+  { "<leader>sv", "<cmd>Telescope git_files<cr>", desc = "Git files" },
+  { "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "Current word" },
+  { "<leader>sx", "<cmd>Telescope commands<cr>", desc = "Commands" },
+  { "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+}

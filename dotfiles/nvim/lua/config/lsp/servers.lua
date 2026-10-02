@@ -1,0 +1,127 @@
+-- LSP server configurations
+-- Each server's configuration is defined here and imported by the main LSP setup
+local schemastore = require "schemastore"
+local css_variables = require "config.completion.css_variables"
+
+return {
+  ---------------------------------------
+  bashls = {},
+  ---------------------------------------
+  cssls = {},
+  ---------------------------------------
+  css_variables = {
+    filetypes = css_variables.filetypes,
+    on_attach = function(client)
+      -- css-variables-language-server currently throws on completion in some CSS module buffers.
+      -- Keep it attached for non-completion features; Blink handles variable completion from the same globs.
+      client.server_capabilities.completionProvider = nil
+    end,
+    settings = {
+      cssVariables = {
+        lookupFiles = css_variables.lookup_files,
+        blacklistFolders = css_variables.blacklist_folders,
+      },
+    },
+  },
+  ---------------------------------------
+  cssmodules_ls = {},
+  ---------------------------------------
+  emmet_language_server = {},
+  ---------------------------------------
+  eslint = {
+    settings = {
+      codeAction = {
+        disableRuleComment = {
+          enable = true,
+          location = "separateLine",
+        },
+        showDocumentation = {
+          enable = true,
+        },
+      },
+    },
+  },
+  ---------------------------------------
+  graphql = {},
+  ---------------------------------------
+  helm_ls = {},
+  ---------------------------------------
+  html = {},
+  ---------------------------------------
+  jsonls = {
+    settings = {
+      json = {
+        validate = { enable = true },
+        schemas = vim.list_extend({
+          {
+            description = "Lua language server config file",
+            filematch = { ".luarc.json" },
+            url = "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/settings/schema.json",
+          },
+        }, schemastore.json.schemas()),
+      },
+    },
+  },
+  ---------------------------------------
+  lua_ls = {
+    settings = {
+      Lua = {
+        completion = { callSnippet = "Replace" },
+        diagnostics = { disable = { "missing-fields" } },
+      },
+    },
+  },
+  ---------------------------------------
+  pyright = {},
+  ---------------------------------------
+  somesass_ls = {},
+  ---------------------------------------
+  terraformls = {},
+  ---------------------------------------
+  tflint = {},
+  ---------------------------------------
+  vtsls = {
+    settings = {
+      typescript = {
+        preferences = {
+          includeCompletionsForModuleExports = true,
+          includeCompletionsForImportStatements = true,
+          importModuleSpecifierPreference = "non-relative",
+          quotePreference = "auto", -- Automatically adjust quotes
+          allowTextChangesInNewFiles = true, -- Allow refactoring in new files
+          provideRefactorNotApplicableReason = true, -- Show why a refactor is unavailable
+        },
+        suggest = {
+          autoImports = true,
+          completeFunctionCalls = true,
+          paths = true,
+        },
+      },
+      javascript = {
+        preferences = {
+          includeCompletionsForModuleExports = true,
+          includeCompletionsForImportStatements = true,
+          importModuleSpecifierPreference = "non-relative",
+          quotePreference = "auto", -- Automatically adjust quotes
+        },
+        suggest = {
+          autoImports = true,
+          completeFunctionCalls = true,
+          paths = true,
+        },
+      },
+    },
+  },
+  ---------------------------------------
+  yamlls = {
+    settings = {
+      yaml = {
+        schemaStore = {
+          enable = false,
+          url = "",
+        },
+        schemas = schemastore.yaml.schemas(),
+      },
+    },
+  },
+}

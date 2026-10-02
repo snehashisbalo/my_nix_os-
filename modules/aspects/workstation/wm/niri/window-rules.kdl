@@ -1,0 +1,120 @@
+// ==========================================================
+//                     Window rules
+// ==========================================================
+
+// Disable static xray for Noctalia elements
+layer-rule {
+    match namespace="^noctalia-(bar|notification|dock|panel|attached-panel|osd).*"
+    background-effect {
+        xray false
+    }
+}
+
+// Keep background sharp outside menus
+layer-rule {
+    match namespace="^noctalia-backdrop.*"
+    background-effect {
+        blur false
+    }
+}
+
+// Exclude blur and xray for the Noctalia screenshot overlay
+layer-rule {
+    match namespace="^noctalia-(screenshot-region|annotate).*"
+    background-effect {
+        blur false
+        xray false
+    }
+}
+
+// Rounded corners for all windows (16px capsule style)
+// draw-border-with-background false prevents the border/gradient from rendering as a solid slab behind translucent windows
+window-rule {
+    geometry-corner-radius 16
+    clip-to-geometry true
+    draw-border-with-background false
+}
+
+// Ghostty: exactly 50% of the screen (0.5) to sit next to the browser without scrolling
+window-rule {
+    match app-id="(?i).*ghostty.*"
+    default-column-width { proportion 0.5; }
+}
+
+// Ghostty scratchpad terminal centered on screen
+window-rule {
+    match app-id="(?i).*ghostty-scratch.*"
+    open-floating true
+    default-column-width { proportion 0.62; }
+    default-window-height { proportion 0.62; }
+    geometry-corner-radius 16
+    clip-to-geometry true
+}
+
+// Telegram Desktop: 42% of the screen
+window-rule {
+    match app-id="(?i).*telegram.*"
+    default-column-width { proportion 0.42; }
+}
+
+// Spotify: moderate transparency over live desktop wallpapers and light blur (xray false)
+window-rule {
+    match app-id="(?i).*spotify.*"
+    opacity 0.88
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Vesktop: native transparent glass via Electron transparent with hardware blur (icons stay fully opaque)
+window-rule {
+    match app-id="(?i).*vesktop.*"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// MPV: neat centered floating matte-glass window
+window-rule {
+    match app-id="(?i).*mpv.*"
+    open-floating true
+    default-column-width { proportion 0.65; }
+    geometry-corner-radius 16
+    clip-to-geometry true
+}
+
+// Firefox always opens on workspace 1 at 50% width
+window-rule {
+    match app-id="(?i).*firefox.*"
+    open-on-workspace "1"
+    default-column-width { proportion 0.5; }
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Floating Picture-in-Picture (PiP) window in the corner with rounded corners
+window-rule {
+    match app-id="(?i).*firefox.*" title="(?i).*(picture-in-picture|картинка в картинке).*"
+    open-floating true
+    default-column-width { fixed 520; }
+    default-window-height { fixed 292; }
+    default-floating-position x=24 y=24 relative-to="bottom-right"
+    geometry-corner-radius 14
+    clip-to-geometry true
+}
+
+// Automatic floating windows for system utilities and media
+window-rule {
+    match app-id="(?i).*(pavucontrol|satty|blueman-manager|gpu-screen-recorder|org.gnome.Loupe|nm-connection-editor).*"
+    open-floating true
+}
+
+// Automatic floating windows for dialogs and file pickers
+window-rule {
+    match title="(?i).*(выбор файла|open file|save file|сохранить файл|подтверждение|dialog).*"
+    open-floating true
+}

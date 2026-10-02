@@ -1,0 +1,20 @@
+input {
+    keyboard {
+        xkb {
+            // Layouts are switched via Noctalia (Control Center /
+            // keyboard-layout widget): XKB switching on Super+Space
+            // is freed up for the launcher.
+            layout "us,ru"
+        }
+        repeat-delay 300
+        repeat-rate 50
+    }
+
+    // Built-in laptop touchpad
+    touchpad {
+        dwt
+        dwtp
+        tap
+        click-method "clickfinger"
+    }
+}

@@ -1,0 +1,149 @@
+binds {
+    // ==========================================================
+    //      Omarchy-style layout (see todos.txt, PART D)
+    //      Mod = Super. keyd intercepts Mod+C/V/X (clipboard).
+    // ==========================================================
+
+    // Keybinding cheatsheet
+    Mod+K hotkey-overlay-title="Key cheatsheet" { show-hotkey-overlay; }
+
+    // ------------------------------------------------------
+    //                 Launcher and system
+    // ------------------------------------------------------
+    // Noctalia app launcher
+    Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
+
+    // Clipboard history (selecting an entry copies it, paste separately)
+    Mod+Ctrl+V hotkey-overlay-title="Clipboard history" { spawn-sh "noctalia msg panel-toggle clipboard"; }
+
+    // System menu: logout / reboot / power off
+    Mod+Escape hotkey-overlay-title="System menu" { spawn-sh "noctalia msg panel-toggle session"; }
+
+    // Lock screen
+    Mod+Ctrl+L hotkey-overlay-title="Lock screen" { spawn-sh "noctalia msg session lock"; }
+
+    // ------------------------------------------------------
+    //                Themes and wallpapers (theme-set)
+    // ------------------------------------------------------
+    // Next wallpaper (colors are recalculated automatically)
+    Mod+Ctrl+Space hotkey-overlay-title="Next wallpaper" { spawn-sh "theme-next-wallpaper"; }
+
+    // Theme menu (Noctalia dmenu -> theme-set)
+    Mod+Shift+Ctrl+Space hotkey-overlay-title="Theme menu" { spawn-sh "theme-menu"; }
+    Mod+Shift+C hotkey-overlay-title="Next theme" { spawn-sh "theme-cycle"; }
+
+    // Noctalia window switcher (hold Alt)
+    Alt+Tab hotkey-overlay-title="Window switcher" { spawn-sh "noctalia msg window-switcher hold"; }
+
+    // kitty terminal
+    Mod+Return hotkey-overlay-title="Terminal" { spawn "kitty"; }
+
+    // Bluetooth: control center on the Bluetooth tab
+    Mod+Shift+B hotkey-overlay-title="Bluetooth" { spawn-sh "noctalia msg panel-toggle control-center bluetooth"; }
+
+    // Wi-Fi: control center on the Network tab
+    Mod+Shift+W hotkey-overlay-title="Wi-Fi" { spawn-sh "noctalia msg panel-toggle control-center network"; }
+
+    // ------------------------------------------------------
+    //                   Window management
+    // ------------------------------------------------------
+    Mod+W hotkey-overlay-title="Close window" { close-window; }
+    Mod+T hotkey-overlay-title="Toggle floating" { toggle-window-floating; }
+    Mod+F hotkey-overlay-title="Fullscreen window" { fullscreen-window; }
+    Mod+Alt+F hotkey-overlay-title="Maximize column" { maximize-column; }
+    Mod+Ctrl+F hotkey-overlay-title="Toggle windowed fullscreen" { toggle-windowed-fullscreen; }
+
+    // Workspace overview (niri default)
+    Mod+O hotkey-overlay-title="Overview" { toggle-overview; }
+
+    // Strip navigation (left / right)
+    Mod+Left  hotkey-overlay-title="Focus column left" { focus-column-left; }
+    Mod+Right hotkey-overlay-title="Focus column right" { focus-column-right; }
+
+    // Navigate windows inside a column (up / down)
+    Mod+Up   hotkey-overlay-title="Focus window/workspace up" { focus-window-or-workspace-up; }
+    Mod+Down hotkey-overlay-title="Focus window/workspace down" { focus-window-or-workspace-down; }
+
+    // Move columns (left / right)
+    Mod+Shift+Left  hotkey-overlay-title="Move column left" { move-column-left; }
+    Mod+Shift+Right hotkey-overlay-title="Move column right" { move-column-right; }
+
+    // Move windows in a column / across workspaces (up / down)
+    Mod+Shift+Up   hotkey-overlay-title="Move window up / to workspace above" { move-window-up-or-to-workspace-up; }
+    Mod+Shift+Down hotkey-overlay-title="Move window down / to workspace below" { move-window-down-or-to-workspace-down; }
+
+    // Sizes: column width / window height
+    Mod+Equal         hotkey-overlay-title="Width +10%" { set-column-width "+10%"; }
+    Mod+Minus         hotkey-overlay-title="Width -10%" { set-column-width "-10%"; }
+    Mod+Shift+Equal   hotkey-overlay-title="Height +10%" { set-window-height "+10%"; }
+    Mod+Shift+Minus   hotkey-overlay-title="Height -10%" { set-window-height "-10%"; }
+
+    // Dragging: Mod+LMB moves, Mod+RMB resizes (niri defaults)
+    // Mod+Left-drag / Mod+Right-drag are not listed here - these are built-in defaults.
+
+    // ------------------------------------------------------
+    //              Workspaces (dynamic)
+    // ------------------------------------------------------
+    Mod+1 hotkey-overlay-title="Workspace 1" { focus-workspace 1; }
+    Mod+2 hotkey-overlay-title="Workspace 2" { focus-workspace 2; }
+    Mod+3 hotkey-overlay-title="Workspace 3" { focus-workspace 3; }
+    Mod+4 hotkey-overlay-title="Workspace 4" { focus-workspace 4; }
+    Mod+5 hotkey-overlay-title="Workspace 5" { focus-workspace 5; }
+    Mod+6 hotkey-overlay-title="Workspace 6" { focus-workspace 6; }
+    Mod+7 hotkey-overlay-title="Workspace 7" { focus-workspace 7; }
+    Mod+8 hotkey-overlay-title="Workspace 8" { focus-workspace 8; }
+    Mod+9 hotkey-overlay-title="Workspace 9" { focus-workspace 9; }
+
+    // Move window to workspace (focus follows the window)
+    Mod+Shift+1 hotkey-overlay-title="Window to workspace 1" { move-window-to-workspace 1; }
+    Mod+Shift+2 hotkey-overlay-title="Window to workspace 2" { move-window-to-workspace 2; }
+    Mod+Shift+3 hotkey-overlay-title="Window to workspace 3" { move-window-to-workspace 3; }
+    Mod+Shift+4 hotkey-overlay-title="Window to workspace 4" { move-window-to-workspace 4; }
+    Mod+Shift+5 hotkey-overlay-title="Window to workspace 5" { move-window-to-workspace 5; }
+    Mod+Shift+6 hotkey-overlay-title="Window to workspace 6" { move-window-to-workspace 6; }
+    Mod+Shift+7 hotkey-overlay-title="Window to workspace 7" { move-window-to-workspace 7; }
+    Mod+Shift+8 hotkey-overlay-title="Window to workspace 8" { move-window-to-workspace 8; }
+    Mod+Shift+9 hotkey-overlay-title="Window to workspace 9" { move-window-to-workspace 9; }
+
+    // Move window without changing focus (focus=false, requires niri 25.x+)
+    Mod+Shift+Alt+1 hotkey-overlay-title="Window to workspace 1 (no focus)" { move-window-to-workspace 1 focus=false; }
+    Mod+Shift+Alt+2 hotkey-overlay-title="Window to workspace 2 (no focus)" { move-window-to-workspace 2 focus=false; }
+    Mod+Shift+Alt+3 hotkey-overlay-title="Window to workspace 3 (no focus)" { move-window-to-workspace 3 focus=false; }
+    Mod+Shift+Alt+4 hotkey-overlay-title="Window to workspace 4 (no focus)" { move-window-to-workspace 4 focus=false; }
+    Mod+Shift+Alt+5 hotkey-overlay-title="Window to workspace 5 (no focus)" { move-window-to-workspace 5 focus=false; }
+    Mod+Shift+Alt+6 hotkey-overlay-title="Window to workspace 6 (no focus)" { move-window-to-workspace 6 focus=false; }
+    Mod+Shift+Alt+7 hotkey-overlay-title="Window to workspace 7 (no focus)" { move-window-to-workspace 7 focus=false; }
+    Mod+Shift+Alt+8 hotkey-overlay-title="Window to workspace 8 (no focus)" { move-window-to-workspace 8 focus=false; }
+    Mod+Shift+Alt+9 hotkey-overlay-title="Window to workspace 9 (no focus)" { move-window-to-workspace 9 focus=false; }
+
+    // Cycle workspaces
+    Mod+Tab        hotkey-overlay-title="Workspace down" { focus-workspace-down; }
+    Mod+Shift+Tab  hotkey-overlay-title="Workspace up" { focus-workspace-up; }
+    Mod+Ctrl+Tab   hotkey-overlay-title="Previous workspace" { focus-workspace-previous; }
+
+    // Cycle workspaces with the mouse wheel
+    Mod+WheelScrollDown cooldown-ms=150 hotkey-overlay-title="Workspace down (wheel)" { focus-workspace-down; }
+    Mod+WheelScrollUp   cooldown-ms=150 hotkey-overlay-title="Workspace up (wheel)" { focus-workspace-up; }
+
+    // ------------------------------------------------------
+    //      Media and volume (Noctalia IPC OSD)
+    // ------------------------------------------------------
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioMute        allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+
+    XF86AudioPlay        allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioNext        allow-when-locked=true { spawn "playerctl" "next"; }
+    XF86AudioPrev        allow-when-locked=true { spawn "playerctl" "previous"; }
+
+    // ------------------------------------------------------
+    //                      Screenshots
+    // ------------------------------------------------------
+    Print       { spawn "noctalia" "msg" "screenshot-region"; }
+    Mod+Shift+S { spawn "noctalia" "msg" "screenshot-region"; }
+    Ctrl+Print  { screenshot-screen; }
+    Alt+Print   { screenshot-window; }
+}

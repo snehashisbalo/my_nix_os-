@@ -1,0 +1,36 @@
+# Rendered by Noctalia (user template "starship") into
+# <state>/starship/starship.toml. DO NOT EDIT: regenerated on every theme
+# change. Selected at runtime through $STARSHIP_CONFIG (see shell/starship.nix).
+#
+# Colours are Noctalia's Material 3 roles, so the prompt follows `theme-set`
+# exactly like the bar and terminals do.
+add_newline = true
+format = "[$directory$git_branch$git_status$nix_shell$cmd_duration$line_break](fg:{{ colors.primary.default.hex }}) [╰─](fg:{{ colors.primary.default.hex }}) $character"
+
+[character]
+success_symbol = "[❯](bold {{ colors.primary.default.hex }})[❯](bold {{ colors.tertiary.default.hex }})"
+error_symbol = "[❯](bold {{ colors.error.default.hex }})[❯](bold {{ colors.error.default.hex }})"
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+truncate_to_repo = false
+style = "fg:{{ colors.on_surface.default.hex }} bg:{{ colors.surface_variant.default.hex }} bold"
+format = "[ $path ]($style)"
+
+[git_branch]
+style = "fg:{{ colors.on_secondary.default.hex }} bg:{{ colors.secondary.default.hex }} bold"
+format = "[ 󰘬 $branch ]($style)"
+
+[git_status]
+style = "fg:{{ colors.on_secondary.default.hex }} bg:{{ colors.secondary.default.hex }}"
+format = "[$all_status$ahead_behind ]($style)"
+
+[nix_shell]
+style = "fg:{{ colors.on_tertiary.default.hex }} bg:{{ colors.tertiary.default.hex }} bold"
+format = "[ 󱄅 nix ]($style)"
+
+[cmd_duration]
+min_time = 2000
+style = "fg:{{ colors.on_surface_variant.default.hex }} bg:{{ colors.surface_container.default.hex }}"
+format = "[ 󱫐 $duration ]($style)"
