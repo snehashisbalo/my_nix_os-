@@ -2,6 +2,7 @@
 {
   den.aspects.workstation.default = {
     includes = with den.aspects.workstation; [
+      bluetooth
       gaming
       printing
       sound
