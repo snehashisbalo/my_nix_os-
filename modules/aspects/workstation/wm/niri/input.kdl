@@ -4,7 +4,7 @@ input {
             // Layouts are switched via Noctalia (Control Center /
             // keyboard-layout widget): XKB switching on Super+Space
             // is freed up for the launcher.
-            layout "us,ru"
+            layout "us"
         }
         repeat-delay 300
         repeat-rate 50

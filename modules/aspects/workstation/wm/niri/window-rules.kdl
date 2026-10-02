@@ -52,11 +52,6 @@ window-rule {
 }
 
 // Telegram Desktop: 42% of the screen
-window-rule {
-    match app-id="(?i).*telegram.*"
-    default-column-width { proportion 0.42; }
-}
-
 // Spotify: moderate transparency over live desktop wallpapers and light blur (xray false)
 window-rule {
     match app-id="(?i).*spotify.*"
@@ -83,6 +78,18 @@ window-rule {
     default-column-width { proportion 0.65; }
     geometry-corner-radius 16
     clip-to-geometry true
+}
+
+// Brave opens true fullscreen (covers the bar, keeps browser UI) rather than
+// a maximized column. Toggle off with Mod+Shift+F.
+window-rule {
+    match app-id="(?i).*brave.*"
+    default-column-width {proportion 0.7; }
+    background-effect {
+	    blur true
+	    xray false
+	 }
+
 }
 
 // Firefox always opens on workspace 1 at 50% width
@@ -115,6 +122,6 @@ window-rule {
 
 // Automatic floating windows for dialogs and file pickers
 window-rule {
-    match title="(?i).*(выбор файла|open file|save file|сохранить файл|подтверждение|dialog).*"
+    match title="(?i).*(open file|save file|dialog).*"
     open-floating true
 }

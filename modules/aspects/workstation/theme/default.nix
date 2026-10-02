@@ -22,8 +22,6 @@
         configDir = config.xdg.configHome;
         dataDir = config.xdg.dataHome;
 
-        nvimThemeFile = "${config.xdg.stateHome}/nvim/noctalia/theme.lua";
-        nvimThemeDir = builtins.dirOf nvimThemeFile;
         oscCacheFile = "${config.xdg.cacheHome}/noctalia/terminal-sequences";
         oscCacheDir = builtins.dirOf oscCacheFile;
 
@@ -99,7 +97,11 @@
           in
           if description == "" then n else description;
 
-        menuLines = lib.concatMapStringsSep "\n" (n: lib.escapeShellArg (menuLabel n)) themeNames;
+        # One line, space separated: the labels are interpolated straight into
+        # a `printf '%s\n' ...` argument list, so a newline separator would make
+        # every label after the first its own command. Labels may contain
+        # spaces and non-ASCII (e.g. "Rosé Pine"), hence the per-label quoting.
+        menuWords = lib.concatStringsSep " " (map (n: lib.escapeShellArg (menuLabel n)) themeNames);
 
         menuLabels = map menuLabel themeNames;
 
@@ -160,10 +162,10 @@
           "# inputs live in this repo, need no network, and their hooks touch"
           "# only files home-manager does not manage."
           ""
-          "[theme.templates.user.nvim-base16]"
-          "input_path = \"$XDG_CONFIG_HOME/noctalia/templates/nvim-base16.lua\""
-          "output_path = \"$XDG_STATE_HOME/nvim/noctalia/theme.lua\""
-          "post_hook = \"pkill -SIGUSR1 nvim >/dev/null 2>&1 || true\""
+          "# Deliberately absent: `nvim-base16`. nvim runs its own Catppuccin"
+          "# Mocha config (see aspects/tools/nvim.nix) instead of having Noctalia"
+          "# repaint it on every `theme-set`; rendering a base16 palette over a"
+          "# static theme file would only fight it."
           ""
           "[theme.templates.user.terminal-sequences]"
           "input_path = \"$XDG_CONFIG_HOME/noctalia/templates/terminal-sequences\""
@@ -284,9 +286,6 @@
             force = true;
           };
 
-          "noctalia/templates/nvim-base16.lua".source =
-            pkgs.writeText "nvim-base16.lua" (builtins.readFile ./templates/nvim-base16.lua);
-
           "noctalia/templates/terminal-sequences".source =
             pkgs.writeText "terminal-sequences" (builtins.readFile ./templates/terminal-sequences);
 
@@ -307,14 +306,14 @@
         };
 
         # Fresh checkouts have no generated files. Noctalia creates the parent
-        # directories, but seeding empty placeholders means `dofile()` and the
-        # terminal `include`s always resolve, and gives templates something to
-        # overwrite on the first `theme-reapply`.
+        # directories, but seeding empty placeholders means the terminal
+        # `include`s and the starship/mpv `include`s always resolve, and gives
+        # templates something to overwrite on the first `theme-reapply`.
         home.activation.noctaliaThemePlaceholders = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          mkdir -p ${lib.escapeShellArg stateDir} ${lib.escapeShellArg nvimThemeDir} ${lib.escapeShellArg oscCacheDir}
-          # Seed empty placeholders so `dofile()`, the terminal `include`s and
-          # the starship/mpv `include`s always resolve before the first render.
-          for placeholder in ${lib.escapeShellArg nvimThemeFile} ${lib.escapeShellArg oscCacheFile} ${lib.escapeShellArg "${config.xdg.stateHome}/starship/starship.toml"} ${lib.escapeShellArg "${configDir}/mpv/noctalia.conf"}; do
+          mkdir -p ${lib.escapeShellArg stateDir} ${lib.escapeShellArg oscCacheDir}
+          # Seed empty placeholders so the terminal `include`s and the
+          # starship/mpv `include`s always resolve before the first render.
+          for placeholder in ${lib.escapeShellArg oscCacheFile} ${lib.escapeShellArg "${config.xdg.stateHome}/starship/starship.toml"} ${lib.escapeShellArg "${configDir}/mpv/noctalia.conf"}; do
             mkdir -p "$(dirname "$placeholder")"
             [ -e "$placeholder" ] || : >"$placeholder"
           done
@@ -567,7 +566,7 @@
               # noctalia's own dmenu bridges to its themed launcher, so this needs
               # no external dmenu runner. It returns the chosen LABEL, which is
               # mapped back to the theme name.
-              selection=$(printf '%s\n' ${menuLines} | noctalia dmenu -p "Theme")
+              selection=$(printf '%s\n' ${menuWords} | noctalia dmenu -p "Theme")
               if [ -z "$selection" ]; then
                 exit 0
               fi

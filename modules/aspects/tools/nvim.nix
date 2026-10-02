@@ -24,11 +24,10 @@
           fi
         '';
 
-        # The colours themselves arrive through the Noctalia "nvim-base16" user
-        # template (see aspects/workstation/theme), which writes
-        # <state>/nvim/noctalia/theme.lua. `lua/plugins/noctalia-base16.lua`
-        # loads that file and re-applies on SIGUSR1, so a `theme-set` repaints
-        # every running nvim without a restart.
+        # The colours come from this config's own `catppuccin` plugin spec
+        # (lua/plugins/colorschemes/catppuccin.lua), with the active flavour
+        # persisted in `theme.json`. `theme-set` does not repaint nvim: run
+        # `:Lazy reload` or restart to pick up a different colourscheme.
         home.packages = with pkgs; [
           neovim
           ripgrep

@@ -132,7 +132,6 @@
               include "theme.kdl"
             '';
         };
-
         xdg.configFile."niri/autostart.sh" = {
           source = autostart;
           force = true;

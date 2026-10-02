@@ -61,12 +61,28 @@
             name = "catppuccin-mocha-dark-cursors";
             package = pkgs.catppuccin-cursors.mochaDark;
           };
+          # Colorful icons by default: `Papirus-Dark` mutes every app icon to
+          # greyscale, which fights a colourful palette. Override per theme with
+          # `icons = { name = ...; package = ...; }` when a theme wants a
+          # different set.
           icons = {
-            name = "Papirus-Dark";
+            name = "Papirus";
             package = pkgs.papirus-icon-theme;
           };
 
           themes = {
+            catppuccin-mocha-dark = {
+              description = "Catppuccin Mocha Dark — custom, dark";
+              palette.kind = "custom";
+              palette.name = "Catppuccin Mocha Dark";
+              # Backgrounds ship with the theme; the file is a plain path so it
+              # is not copied into the store.
+              wallpaper = "/home/scythe/Pictures/Wallpapers/catppuccin-mocha-dark.jpg";
+              icons = {
+                name = "Papirus";
+                package = pkgs.papirus-icon-theme;
+              };
+            };
             noctalia = {
               description = "Noctalia — builtin, dark";
               palette.kind = "builtin";
