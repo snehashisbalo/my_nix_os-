@@ -420,6 +420,9 @@
 
                 # Alias the generic families onto the theme font so every app
                 # asking for sans-serif follows the theme, not just GTK ones.
+                # Bengali (bn) keeps Noto Sans/Serif Bengali via a strong
+                # prepend, so the theme monospace (no Bengali glyphs) never
+                # hijacks `:lang=bn` lookups.
                 if [ -n "$family" ]; then
                   mkdir -p "$CONFIG_DIR/fontconfig"
                   printf '%s\n' \
@@ -428,6 +431,21 @@
                     '<fontconfig>' \
                     "  <alias><family>sans-serif</family><prefer><family>$family</family></prefer></alias>" \
                     "  <alias><family>system-ui</family><prefer><family>$family</family></prefer></alias>" \
+                    '  <match target="pattern">' \
+                    '    <test name="lang" compare="contains"><string>bn</string></test>' \
+                    '    <test name="family"><string>sans-serif</string></test>' \
+                    '    <edit name="family" mode="prepend" binding="strong"><string>Noto Sans Bengali</string></edit>' \
+                    '  </match>' \
+                    '  <match target="pattern">' \
+                    '    <test name="lang" compare="contains"><string>bn</string></test>' \
+                    '    <test name="family"><string>serif</string></test>' \
+                    '    <edit name="family" mode="prepend" binding="strong"><string>Noto Serif Bengali</string></edit>' \
+                    '  </match>' \
+                    '  <match target="pattern">' \
+                    '    <test name="lang" compare="contains"><string>bn</string></test>' \
+                    '    <test name="family"><string>monospace</string></test>' \
+                    '    <edit name="family" mode="prepend" binding="strong"><string>Noto Sans Bengali</string></edit>' \
+                    '  </match>' \
                     '</fontconfig>' >"$CONFIG_DIR/fontconfig/fonts.conf"
                   fc-cache -f >/dev/null 2>&1 || true
                 fi

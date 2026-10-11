@@ -15,6 +15,7 @@
 
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
+        noto-fonts
       ];
 
       environment.systemPackages = with pkgs; [
