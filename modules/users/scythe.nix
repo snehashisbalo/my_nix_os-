@@ -29,9 +29,15 @@
     # OS-level user config. `isNormalUser`, `home`, `wheel` and
     # `networkmanager` are already provided by define-user / primary-user.
     nixos = { pkgs, ... }: {
-      users.users.scythe.packages = with pkgs; [
-        tree
-      ];
+      users.users.scythe = {
+        packages = with pkgs; [
+          tree
+        ];
+        shell = pkgs.fish;
+      };
+
+      programs.fish.enable = true;
+      environment.shells = [ pkgs.fish ];
     };
 
     # Home-manager config for scythe.

@@ -5,6 +5,7 @@
       programs.bash = {
         enable = true;
         initExtra = ''
+          [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
         '';
       };
 
@@ -13,6 +14,23 @@
         shellAliases = {
           pls = "sudo";
           cat = "bat --paging=never";
+          gpush = "git push origin";
+          gpull = "git pull origin";
+          ".." = "cd ..";
+          "..." = "cd ../..";
+          "...." = "cd ../../..";
+          rebuild = "sudo nixos-rebuild switch --flake path:/etc/nixos#compulex";
+          ll = "ls -al";
+        };
+        functions = {
+          gcm = ''
+            set -l msg (string join ' ' -- $argv)
+            git commit -m "$msg"
+          '';
+          cd = ''
+            builtin cd $argv
+            and ls -al
+          '';
         };
         shellAbbrs = {
           # `path:` is required: /etc/nixos is owned by scythe, so libgit2

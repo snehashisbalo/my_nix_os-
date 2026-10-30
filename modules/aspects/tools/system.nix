@@ -37,6 +37,9 @@
         programs.fzf = {
           enable = true;
           enableFishIntegration = true;
+
+          # Atuin owns Ctrl-R; fzf keeps its file/directory widgets.
+          historyWidget.command = "";
         };
 
         programs.zoxide = {
